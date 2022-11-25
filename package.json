@@ -1,0 +1,24 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "бэкенд дипломного проекта",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denimur/movies-explorer-api.git"
+  },
+  "author": "denis muradov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denimur/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/denimur/movies-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "nodemon": "^2.0.20"
+  }
+}
