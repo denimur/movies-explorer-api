@@ -3,30 +3,30 @@ const { Schema, model } = require('mongoose');
 const movieSchema = new Schema({
   country: {
     type: String,
-    required: true
+    required: true,
   },
   director: {
     type: String,
-    required: true
+    required: true,
   },
   duration: {
     type: Number,
-    required: true
+    required: true,
   },
   year: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   image: {
     type: String,
     required: true,
     match: /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/gi,
   },
-  trailerLink: {
+  trailer: {
     type: String,
     required: true,
     match: /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/gi,
@@ -43,16 +43,16 @@ const movieSchema = new Schema({
   },
   movieId: {
     type: String,
-    required: true
+    required: true,
   },
   nameRU: {
     type: String,
-    required: true
+    required: true,
   },
   nameEN: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = model('movie', movieSchema);
