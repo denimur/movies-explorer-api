@@ -1,4 +1,4 @@
-const bcript = require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ConflictError = require('../utils/ConflictError');
@@ -9,10 +9,18 @@ const NotFoundError = require('../utils/NotFoundError');
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
-  bcript.hash(password, 10)
-    .then(hash => User.create({ name, email, password: hash }))
-    .then(({ name, email }) => res.status(200).send({ data: { name, email } }))
-    .catch(err => {
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, email, password: hash,
+    }))
+    .then((user) => {
+      res.status(200).send({
+        data: {
+          name: user.name, email: user.email, _id: user._id,
+        },
+      });
+    })
+    .catch((err) => {
       if (err.code === 11000) {
         return next(new ConflictError('Пользователь с такими данными уже существует.'));
       }
@@ -21,16 +29,16 @@ module.exports.createUser = (req, res, next) => {
       }
 
       return next(err);
-    })
-}
+    });
+};
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   const { SECRET_KEY = 'mySecretKey' } = process.env;
 
   User.findUserByCredentials(email, password)
-    .then(({ _id, name, email }) => {
-      const token = jwt.sign({ _id }, SECRET_KEY, { expiresIn: '7d' });
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
 
       if (!token) {
         throw new UnauthorizedError('Передан недействительный токен.');
@@ -42,7 +50,7 @@ module.exports.login = (req, res, next) => {
           httpOnly: true,
           sameSite: true,
         })
-        .send({ data: { _id, name, email } })
+        .send({ data: { name: user.name, email: user.email, _id: user._id } });
     })
     .catch((err) => next(err));
 };
@@ -75,4 +83,4 @@ module.exports.updateCurrentUser = (req, res, next) => {
         next(err);
       }
     });
-}
+};

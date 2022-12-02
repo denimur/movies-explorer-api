@@ -22,7 +22,7 @@ const cors = (req, res, next) => {
     res.header('Access-Control-Allow-Credentials', true);
     return res.end();
   }
-  next();
+  return next();
 };
 
 module.exports = cors;
