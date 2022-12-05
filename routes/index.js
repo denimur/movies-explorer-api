@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { createUser, login } = require('../controllers/user');
+const { createUser, login, logout } = require('../controllers/user');
 const { notFoundController } = require('../controllers/notFoundController');
 const userRouter = require('./user');
 const movieRouter = require('./movie');
@@ -13,6 +13,7 @@ router.use(auth);
 
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);
+router.use('/logout', logout);
 router.use(notFoundController);
 
 module.exports = router;

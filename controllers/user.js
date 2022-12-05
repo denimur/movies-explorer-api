@@ -5,6 +5,7 @@ const ConflictError = require('../utils/ConflictError');
 const BadRequestError = require('../utils/BadRequestError');
 const UnauthorizedError = require('../utils/UnauthorizedError');
 const NotFoundError = require('../utils/NotFoundError');
+const { ok } = require('../utils/status');
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -14,7 +15,7 @@ module.exports.createUser = (req, res, next) => {
       name, email, password: hash,
     }))
     .then((user) => {
-      res.status(200).send({
+      res.status(ok).send({
         data: {
           name: user.name, email: user.email, _id: user._id,
         },
@@ -44,7 +45,7 @@ module.exports.login = (req, res, next) => {
         throw new UnauthorizedError('Передан недействительный токен.');
       }
       res
-        .status(200)
+        .status(ok)
         .cookie('token', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
@@ -59,7 +60,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
     .then((user) => {
-      res.status(200).send(user);
+      res.status(ok).send(user);
     })
     .catch(next);
 };
@@ -75,7 +76,7 @@ module.exports.updateCurrentUser = (req, res, next) => {
     },
   )
     .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(ok).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы неверные данные при обновлении пользователя.'));
@@ -83,4 +84,11 @@ module.exports.updateCurrentUser = (req, res, next) => {
         next(err);
       }
     });
+};
+
+module.exports.logout = (req, res) => {
+  res
+    .status(ok)
+    .clearCookie('token')
+    .end();
 };

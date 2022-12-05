@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://denimur.mesto.nomoredomains.icu',
-  'http://denimur.mesto.nomoredomains.icu',
+  'https://denimur.diploma.nomoredomains.club',
+  'http://denimur.diploma.nomoredomains.club',
   'http://localhost:3001',
 ];
 
