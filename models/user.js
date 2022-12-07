@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt');
 const UnauthorizedError = require('../utils/UnauthorizedError');
+const { unauthorized, wrongEmailFormat } = require('../utils/constants');
 
 const userSchema = new Schema({
   name: {
@@ -9,7 +10,6 @@ const userSchema = new Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Константин',
   },
   email: {
     type: String,
@@ -17,7 +17,7 @@ const userSchema = new Schema({
     required: true,
     validate: {
       validator: (value) => isEmail(value),
-      message: 'Неправильный формат почты',
+      message: wrongEmailFormat,
     },
   },
   password: {
@@ -31,12 +31,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError('Недействительный email или пароль.');
+        throw new UnauthorizedError(unauthorized);
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new UnauthorizedError('Недействительный email или пароль.');
+            throw new UnauthorizedError(unauthorized);
           }
           return user;
         });

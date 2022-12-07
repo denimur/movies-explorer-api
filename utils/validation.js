@@ -23,8 +23,8 @@ function celebrateLogin() {
 function celebrateUpdateUser() {
   return celebrate({
     body: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      email: Joi.string().email(),
+      name: Joi.string().required().min(2).max(30),
+      email: Joi.string().required().email(),
     }),
   });
 }
@@ -50,7 +50,7 @@ function celebrateCreateMovie() {
       thumbnail: Joi.string().required().pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
-      movieId: Joi.string().alphanum().hex().length(24),
+      movieId: Joi.number().required(),
     }),
   });
 }

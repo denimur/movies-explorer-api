@@ -13,7 +13,7 @@ router.use(auth);
 
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);
-router.use('/logout', logout);
+router.use('/signout', logout);
 router.use(notFoundController);
 
 module.exports = router;

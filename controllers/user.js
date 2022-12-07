@@ -3,9 +3,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ConflictError = require('../utils/ConflictError');
 const BadRequestError = require('../utils/BadRequestError');
-const UnauthorizedError = require('../utils/UnauthorizedError');
 const NotFoundError = require('../utils/NotFoundError');
 const { ok } = require('../utils/status');
+const {
+  conflict, userCreateBadRequest, userUpdateBadRequest, userNotFound,
+} = require('../utils/constants');
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -23,10 +25,10 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        return next(new ConflictError('Пользователь с такими данными уже существует.'));
+        return next(new ConflictError(conflict));
       }
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы неверные данные при создании пользователя.'));
+        return next(new BadRequestError(userCreateBadRequest));
       }
 
       return next(err);
@@ -41,9 +43,6 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
 
-      if (!token) {
-        throw new UnauthorizedError('Передан недействительный токен.');
-      }
       res
         .status(ok)
         .cookie('token', token, {
@@ -58,7 +57,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
+    .orFail(new NotFoundError(userNotFound))
     .then((user) => {
       res.status(ok).send(user);
     })
@@ -75,14 +74,16 @@ module.exports.updateCurrentUser = (req, res, next) => {
       runValidators: true,
     },
   )
-    .orFail(new NotFoundError('Пользователь по указанному _id не найден.'))
+    .orFail(new NotFoundError(userNotFound))
     .then((user) => res.status(ok).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы неверные данные при обновлении пользователя.'));
-      } else {
-        next(err);
+      if (err.code === 11000) {
+        return next(new ConflictError(conflict));
       }
+      if (err.name === 'ValidationError') {
+        return next(new BadRequestError(userUpdateBadRequest));
+      }
+      return next(err);
     });
 };
 
