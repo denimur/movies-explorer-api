@@ -2,9 +2,12 @@ const Movie = require('../models/movie');
 const BadRequestError = require('../utils/BadRequestError');
 const NotFoundError = require('../utils/NotFoundError');
 const ForbiddenError = require('../utils/ForbiddenError');
+const { ERROR_MESSAGES } = require('../utils/constants');
+const { ok } = require('../utils/status');
+
 const {
   movieCreateBadRequest, movieDeleteBadRequest, movieDeleteForbidden, movieNotFound,
-} = require('../utils/constants');
+} = ERROR_MESSAGES;
 
 module.exports.createMovie = (req, res, next) => {
   const ownerId = req.user._id;
@@ -36,7 +39,7 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
     owner: ownerId,
   })
-    .then((movie) => res.status(200).send(movie))
+    .then((movie) => res.status(ok).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError(movieCreateBadRequest));
@@ -50,7 +53,7 @@ module.exports.getMovies = (req, res, next) => {
 
   Movie.find({ owner: ownerId })
     .populate('owner')
-    .then((movies) => res.status(200).send({ data: movies }))
+    .then((movies) => res.status(ok).send({ data: movies }))
     .catch(next);
 };
 
@@ -62,7 +65,7 @@ module.exports.deleteMovie = (req, res, next) => {
         throw new ForbiddenError(movieDeleteForbidden);
       }
       movie.remove();
-      res.status(200).send(movie);
+      res.status(ok).send(movie);
     })
     .catch((err) => {
       if (err.name === 'CastError') {

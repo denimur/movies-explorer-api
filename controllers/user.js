@@ -5,9 +5,11 @@ const ConflictError = require('../utils/ConflictError');
 const BadRequestError = require('../utils/BadRequestError');
 const NotFoundError = require('../utils/NotFoundError');
 const { ok } = require('../utils/status');
+const { ERROR_MESSAGES } = require('../utils/constants');
+
 const {
-  conflict, userCreateBadRequest, userUpdateBadRequest, userNotFound,
-} = require('../utils/constants');
+  conflict, userCreateBadRequest, userNotFound, userUpdateBadRequest,
+} = ERROR_MESSAGES;
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
