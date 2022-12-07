@@ -9,7 +9,7 @@ const errorHandler = require('./utils/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const limiter = require('./middlewares/limiter');
-const DB_URL = require('./utils/constants');
+const { DB_URL } = require('./utils/constants');
 
 const { MONGO_URL = DB_URL } = process.env;
 
