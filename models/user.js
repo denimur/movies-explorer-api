@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const UnauthorizedError = require('../utils/UnauthorizedError');
 const { ERROR_MESSAGES } = require('../utils/constants');
 
-const { wrongEmailFormat, unauthorized } = ERROR_MESSAGES;
+const { wrongEmailFormat, wrongCredentials } = ERROR_MESSAGES;
 
 const userSchema = new Schema({
   name: {
@@ -33,12 +33,12 @@ userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError(unauthorized);
+        throw new UnauthorizedError(wrongCredentials);
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw new UnauthorizedError(unauthorized);
+            throw new UnauthorizedError(wrongCredentials);
           }
           return user;
         });

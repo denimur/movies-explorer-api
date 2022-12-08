@@ -8,8 +8,10 @@ const ERROR_MESSAGES = {
   movieDeleteForbidden: 'Удалять можно только свои фильмы.',
   movieDeleteBadRequest: 'Переданы неверные данные при удалении фильма.',
   sourceNotFound: 'Запрашиваемый ресурс не найден',
-  unauthorized: 'Недействительный email или пароль.',
-  wrongEmailFormat: 'Неправильный формат почты',
+  unauthorized: 'Необходима авторизация.',
+  serverError: 'На сервере произошла ошибка',
+  wrongCredentials: 'Недействительный email или пароль.',
+  wrongEmailFormat: 'Неправильный формат почты.',
 };
 
 const DB_URL = 'mongodb://localhost:27017/moviesdb';
