@@ -1,15 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const { errors } = require('celebrate');
-const helmet = require('helmet');
-const routes = require('./routes');
-const errorHandler = require('./utils/errorHandler');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
-const limiter = require('./middlewares/limiter');
-const { DB_URL } = require('./utils/constants');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const { errors } = require("celebrate");
+const helmet = require("helmet");
+const routes = require("./routes");
+const errorHandler = require("./utils/errorHandler");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+const cors = require("./middlewares/cors");
+const limiter = require("./middlewares/limiter");
+const { DB_URL } = require("./utils/constants");
 
 const { MONGO_URL = DB_URL } = process.env;
 

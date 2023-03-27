@@ -1,8 +1,8 @@
-const { Schema, model } = require('mongoose');
-const { isEmail } = require('validator');
-const bcrypt = require('bcrypt');
-const UnauthorizedError = require('../utils/UnauthorizedError');
-const { ERROR_MESSAGES } = require('../utils/constants');
+const { Schema, model } = require("mongoose");
+const { isEmail } = require("validator");
+const bcrypt = require("bcrypt");
+const UnauthorizedError = require("../utils/UnauthorizedError");
+const { ERROR_MESSAGES } = require("../utils/constants");
 
 const { wrongEmailFormat, wrongCredentials } = ERROR_MESSAGES;
 
@@ -30,19 +30,19 @@ const userSchema = new Schema({
 });
 
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email }).select('+password')
+  return this.findOne({ email })
+    .select("+password")
     .then((user) => {
       if (!user) {
         throw new UnauthorizedError(wrongCredentials);
       }
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            throw new UnauthorizedError(wrongCredentials);
-          }
-          return user;
-        });
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          throw new UnauthorizedError(wrongCredentials);
+        }
+        return user;
+      });
     });
 };
 
-module.exports = model('user', userSchema);
+module.exports = model("user", userSchema);
