@@ -12,4 +12,4 @@
 
 ## Ссылки
 
-- сервер https://api.denimur.diploma.nomoredomains.club
+- сервер https://api.denimur-diploma.ru
