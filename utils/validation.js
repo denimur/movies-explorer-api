@@ -1,5 +1,5 @@
-const { celebrate } = require('celebrate');
-const Joi = require('joi');
+const { celebrate } = require("celebrate");
+const Joi = require("joi");
 
 function celebrateCreateUser() {
   return celebrate({
@@ -45,9 +45,15 @@ function celebrateCreateMovie() {
       duration: Joi.number().required(),
       year: Joi.string().required(),
       description: Joi.string().required(),
-      image: Joi.string().required().pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
-      trailer: Joi.string().required().pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
-      thumbnail: Joi.string().required().pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
+      image: Joi.string()
+        .required()
+        .pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
+      trailerLink: Joi.string()
+        .required()
+        .pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
+      thumbnail: Joi.string()
+        .required()
+        .pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/),
       nameRU: Joi.string().required(),
       nameEN: Joi.string().required(),
       movieId: Joi.number().required(),

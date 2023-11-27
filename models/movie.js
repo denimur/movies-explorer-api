@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const movieSchema = new Schema({
   country: {
@@ -26,7 +26,7 @@ const movieSchema = new Schema({
     required: true,
     match: /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/gi,
   },
-  trailer: {
+  trailerLink: {
     type: String,
     required: true,
     match: /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*#?$/gi,
@@ -38,7 +38,7 @@ const movieSchema = new Schema({
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
     required: true,
   },
   movieId: {
@@ -55,4 +55,4 @@ const movieSchema = new Schema({
   },
 });
 
-module.exports = model('movie', movieSchema);
+module.exports = model("movie", movieSchema);
