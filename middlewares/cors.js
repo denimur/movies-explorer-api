@@ -1,7 +1,8 @@
 const allowedCors = [
-  'https://denimur.diploma.nomoredomains.club',
-  'http://denimur.diploma.nomoredomains.club',
+  'https://denimur-diploma.ru',
+  'http://denimur-diploma.ru',
   'http://localhost:3001',
+  'http://localhost:3000',
 ];
 
 const cors = (req, res, next) => {
